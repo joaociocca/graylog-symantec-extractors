@@ -1,0 +1,80 @@
+{
+  "extractors": [
+    {
+      "title": "Symantec traffic logs",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{HOSTNAME:event_server} SymantecServer: %{DATA:event_source},Local: %{IP:event_localhost_ip},Local: %{NUMBER:event_localhost_port},Local: %{GREEDYDATA:event_localhost_id},Remote: %{IP:event_remote_ip},Remote: (%{HOSTNAME:event_remote_hostname})?,Remote: %{NUMBER:event_remote_port},Remote: %{GREEDYDATA:event_remote_id},%{DATA:event_protocol},%{GREEDYDATA:event_direction},Begin: %{SYMANTEC_DATE:event_begin},End: %{SYMANTEC_DATE:event_end},Occurrences: %{INT:event_quantity},Application: %{GREEDYDATA:event_app},Rule: %{GREEDYDATA:event_rule},Location: %{GREEDYDATA:event_location},User: %{USER:event_user},Domain: %{GREEDYDATA:event_domain},Action: %{GREEDYDATA:event_action}",
+        "named_captures_only": true
+      },
+      "condition_type": "regex",
+      "condition_value": ".*(TCP|ICMP|UDP|8).*"
+    },
+    {
+      "title": "Symantec REP logs",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{HOSTNAME:event_server} SymantecServer: %{DATA:event_source},Category: %{NUMBER:event_category_code},%{DATA:event_category},%{GREEDYDATA:event_description}",
+        "named_captures_only": true
+      },
+      "condition_type": "string",
+      "condition_value": ",REP,"
+    },
+    {
+      "title": "Symantec SYLINK logs",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{HOSTNAME:event_server} SymantecServer: %{DATA:event_source},Category: %{NUMBER:event_category_code},%{DATA:event_category},%{GREEDYDATA:description}",
+        "named_captures_only": true
+      },
+      "condition_type": "string",
+      "condition_value": ",SYLINK,"
+    },
+    {
+      "title": "Symantec OTHERS logs",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{HOSTNAME:event_server} SymantecServer: %{DATA:event_source},%{GREEDYDATA:event_description},Local: %{IP:event_localhost_ip},Local: %{GREEDYDATA:event_localhost_id},Remote: (%{HOSTNAME:event_remote_hostname})?,Remote: %{IP:event_remote_ip},Remote: %{GREEDYDATA:event_remote_id},%{DATA:event_direction},%{DATA:event_category},,Begin: %{SYMANTEC_DATE:event_begin},End: %{SYMANTEC_DATE:event_end},Occurrences: %{INT:event_quantity},Application: (%{GREEDYDATA:event_app})?,Location: %{GREEDYDATA:event_location},User: %{USER:event_user},Domain: %{GREEDYDATA:event_domain},Local Port %{NUMBER:event_localhost_port},Remote Port %{NUMBER:event_remote_port},CIDS Signature ID:%{DATA:event_cids_signature_id},CIDS Signature string: (%{DATA:event_cids_signature_string})?,CIDS Signature SubID: %{DATA:event_cids_signature_subid},Intrusion URL: (%{URI:event_intrusion_url})?,Intrusion Payload URL:(\\s%{URI:event_intrusion_payload_url})?",
+        "named_captures_only": true
+      },
+      "condition_type": "string",
+      "condition_value": ",OTHERS,"
+    },
+    {
+      "title": "Symantec EP error logs",
+      "extractor_type": "grok",
+      "converters": [],
+      "order": 0,
+      "cursor_strategy": "copy",
+      "source_field": "message",
+      "target_field": "",
+      "extractor_config": {
+        "grok_pattern": "%{HOSTNAME:event_server} SymantecServer: %{DATA:event_source},Category: %{NUMBER:event_category_code},%{GREEDYDATA:event_category},%{GREEDYDATA:event_message}",
+        "named_captures_only": true
+      },
+      "condition_type": "string",
+      "condition_value": ",Symantec Endpoint Protection,"
+    }
+  ],
+  "version": "2.2.0-SNAPSHOT"
+}
